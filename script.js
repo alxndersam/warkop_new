@@ -205,10 +205,7 @@ document
     await db.ref("orders").push(data);
 
     // POPUP
-    alert(
-      `☕ Pesanan Berhasil!\n\nNomor Antrian: ${antrian}\nSilakan menuju kasir untuk pembayaran 😄`
-    );
-
+    showPopup(antrian);
     // RESET
     cart.length = 0;
 
@@ -221,3 +218,18 @@ document
 
 // INIT
 renderCart();
+
+function showPopup(antrian){
+
+  document.getElementById("queue-number")
+    .innerText = "#" + antrian;
+
+  document.getElementById("popup")
+    .style.display = "flex";
+}
+
+function closePopup(){
+
+  document.getElementById("popup")
+    .style.display = "none";
+}
