@@ -1,0 +1,71 @@
+body{
+  margin:0;
+  padding:20px;
+
+  font-family:Poppins,sans-serif;
+
+  background:#2b1d14;
+  color:white;
+}
+
+header{
+  margin-bottom:30px;
+}
+
+#orders-container{
+  display:grid;
+  gap:20px;
+}
+
+.order-card{
+  background:#3a281d;
+
+  padding:20px;
+
+  border-radius:20px;
+}
+
+.order-card h2{
+  margin-bottom:10px;
+}
+
+.order-list{
+  margin-top:15px;
+}
+
+.order-item{
+  display:flex;
+  justify-content:space-between;
+
+  margin-bottom:10px;
+}
+
+.status{
+  margin-top:15px;
+  font-weight:bold;
+}
+
+.actions{
+  margin-top:20px;
+
+  display:flex;
+  gap:10px;
+}
+
+.actions button{
+  flex:1;
+  padding:10px;
+
+  border:none;
+  border-radius:10px;
+
+  cursor:pointer;
+}
+
+.process{
+  background:orange;
+}
+
+.done{
+  background:green;
+}
