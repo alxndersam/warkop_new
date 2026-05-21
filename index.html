@@ -1,93 +1,151 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Warkop Senja</title>
 
   <link rel="stylesheet" href="style.css">
 
+  <!-- FIREBASE -->
   <script defer src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+
   <script defer src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
+  <!-- SCRIPT -->
   <script defer src="script.js"></script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- FONT -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  >
+
 </head>
 
 <body>
 
+  <!-- HERO -->
   <header class="hero">
 
     <div class="overlay"></div>
 
     <div class="hero-content">
-      <h1>☕ WARKOP SENJA ☕</h1>
-      <p>Nongkrong, ngopi, cerita sampai lupa waktu.</p>
+
+      <h1>
+        ☕ WARKOP SENJA ☕
+      </h1>
+
+      <p>
+        Nongkrong, ngopi, cerita sampai lupa waktu.
+      </p>
+
     </div>
 
   </header>
 
+  <!-- MAIN -->
   <main>
 
+    <!-- MENU -->
     <section class="section">
 
-      <h2>Menu Favorit</h2>
+      <h2>
+        Menu Favorit
+      </h2>
 
       <div class="menu-grid">
 
+        <!-- MENU 1 -->
         <div class="menu-card">
+
           <img src="images/es-kopi-susu.jpg">
 
-          <h3>Es Kopi Susu</h3>
+          <h3>
+            Es Kopi Susu
+          </h3>
 
-          <p>Rp 18.000</p>
+          <p>
+            Rp 18.000
+          </p>
 
-          <button onclick="addToCart('Es Kopi Susu',18000)">
+          <button
+            onclick="addToCart('Es Kopi Susu',18000)"
+          >
             Tambah
           </button>
+
         </div>
 
+        <!-- MENU 2 -->
         <div class="menu-card">
+
           <img src="images/kopi-hitam.jpg">
 
-          <h3>Kopi Hitam</h3>
+          <h3>
+            Kopi Hitam
+          </h3>
 
-          <p>Rp 12.000</p>
+          <p>
+            Rp 12.000
+          </p>
 
-          <button onclick="addToCart('Kopi Hitam',12000)">
+          <button
+            onclick="addToCart('Kopi Hitam',12000)"
+          >
             Tambah
           </button>
+
         </div>
 
+        <!-- MENU 3 -->
         <div class="menu-card">
+
           <img src="images/roti-bakar.jpg">
 
-          <h3>Roti Bakar</h3>
+          <h3>
+            Roti Bakar
+          </h3>
 
-          <p>Rp 15.000</p>
+          <p>
+            Rp 15.000
+          </p>
 
-          <button onclick="addToCart('Roti Bakar',15000)">
+          <button
+            onclick="addToCart('Roti Bakar',15000)"
+          >
             Tambah
           </button>
+
         </div>
 
       </div>
 
     </section>
 
+    <!-- CART -->
     <section class="section cart-section">
 
-      <h2>🛒 Keranjang</h2>
+      <h2>
+        🛒 Keranjang
+      </h2>
 
       <div id="cart-items"></div>
 
       <h3 class="total">
+
         Total:
         Rp <span id="total">0</span>
+
       </h3>
 
+      <!-- FORM -->
       <form id="orderForm">
 
         <input
@@ -113,28 +171,35 @@
     </section>
 
   </main>
-<div id="popup" class="popup">
 
-  <div class="popup-content">
+  <!-- POPUP -->
+  <div id="popup" class="popup">
 
-    <h2>☕ Pesanan Berhasil!</h2>
+    <div class="popup-content">
 
-    <p>Nomor Antrian Kamu</p>
+      <h2>
+        ☕ Pesanan Berhasil!
+      </h2>
 
-    <h1 id="queue-number">
-      #1
-    </h1>
+      <p>
+        Nomor Antrian Kamu
+      </p>
 
-    <p>
-      Silakan menuju kasir untuk pembayaran 😄
-    </p>
+      <h1 id="queue-number">
+        #1
+      </h1>
 
-    <button onclick="closePopup()">
-      Oke
-    </button>
+      <p>
+        Silakan menuju kasir untuk pembayaran 😄
+      </p>
+
+      <button onclick="closePopup()">
+        Oke
+      </button>
+
+    </div>
 
   </div>
 
-</div>
 </body>
 </html>
