@@ -15,13 +15,20 @@ const db = firebase.database();
 
 const cart = [];
 
-const cartItems = document.getElementById("cart-items");
-const totalText = document.getElementById("total");
+const cartItems =
+  document.getElementById("cart-items");
 
-// TAMBAH KE CART
+const totalText =
+  document.getElementById("total");
+
+// ======================
+// ADD TO CART
+// ======================
+
 function addToCart(menu, harga){
 
-  const existing = cart.find(item => item.menu === menu);
+  const existing =
+    cart.find(item => item.menu === menu);
 
   if(existing){
 
@@ -40,7 +47,10 @@ function addToCart(menu, harga){
   renderCart();
 }
 
+// ======================
 // RENDER CART
+// ======================
+
 function renderCart(){
 
   cartItems.innerHTML = "";
@@ -50,9 +60,11 @@ function renderCart(){
   if(cart.length === 0){
 
     cartItems.innerHTML = `
+
       <p class="empty-cart">
         Keranjang masih kosong ☕
       </p>
+
     `;
 
     totalText.innerText = "0";
@@ -60,7 +72,7 @@ function renderCart(){
     return;
   }
 
-  cart.forEach((item, index) => {
+  cart.forEach((item,index)=>{
 
     total += item.harga * item.qty;
 
@@ -70,10 +82,13 @@ function renderCart(){
 
         <div class="cart-left">
 
-          <h4>${item.menu}</h4>
+          <h4>
+            ${item.menu}
+          </h4>
 
           <p>
-            Rp ${item.harga.toLocaleString('id-ID')}
+            Rp ${item.harga
+              .toLocaleString('id-ID')}
           </p>
 
         </div>
@@ -116,7 +131,10 @@ function renderCart(){
     total.toLocaleString('id-ID');
 }
 
-// TAMBAH QTY
+// ======================
+// INCREASE QTY
+// ======================
+
 function increaseQty(index){
 
   cart[index].qty++;
@@ -124,7 +142,10 @@ function increaseQty(index){
   renderCart();
 }
 
-// KURANG QTY
+// ======================
+// DECREASE QTY
+// ======================
+
 function decreaseQty(index){
 
   if(cart[index].qty > 1){
@@ -140,7 +161,10 @@ function decreaseQty(index){
   renderCart();
 }
 
-// HAPUS ITEM
+// ======================
+// REMOVE ITEM
+// ======================
+
 function removeItem(index){
 
   cart.splice(index,1);
@@ -148,10 +172,13 @@ function removeItem(index){
   renderCart();
 }
 
+// ======================
 // SUBMIT ORDER
+// ======================
+
 document
   .getElementById("orderForm")
-  .addEventListener("submit", async (e) => {
+  .addEventListener("submit", async (e)=>{
 
     e.preventDefault();
 
@@ -168,7 +195,7 @@ document
     const meja =
       document.getElementById("meja").value;
 
-    // AMBIL JUMLAH ORDER
+    // GET TOTAL ORDER
     const snapshot =
       await db.ref("orders").once("value");
 
@@ -178,7 +205,7 @@ document
     // HITUNG TOTAL
     let total = 0;
 
-    cart.forEach(item => {
+    cart.forEach(item=>{
 
       total += item.harga * item.qty;
 
@@ -192,21 +219,22 @@ document
 
       antrian,
 
-      status: "pending",
+      status:"pending",
 
-      orders: cart,
+      orders:cart,
 
       total,
 
-      createdAt: Date.now()
+      createdAt:Date.now()
     };
 
-    // KIRIM KE FIREBASE
+    // PUSH FIREBASE
     await db.ref("orders").push(data);
 
-    // POPUP
+    // SHOW POPUP
     showPopup(antrian);
-    // RESET
+
+    // RESET CART
     cart.length = 0;
 
     renderCart();
@@ -214,22 +242,33 @@ document
     document
       .getElementById("orderForm")
       .reset();
+
 });
 
-// INIT
-renderCart();
+// ======================
+// POPUP
+// ======================
 
 function showPopup(antrian){
 
-  document.getElementById("queue-number")
+  document
+    .getElementById("queue-number")
     .innerText = "#" + antrian;
 
-  document.getElementById("popup")
+  document
+    .getElementById("popup")
     .style.display = "flex";
 }
 
 function closePopup(){
 
-  document.getElementById("popup")
+  document
+    .getElementById("popup")
     .style.display = "none";
 }
+
+// ======================
+// INIT
+// ======================
+
+renderCart();
