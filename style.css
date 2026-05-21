@@ -202,3 +202,41 @@ form input{
 
   cursor:pointer;
 }
+
+.popup{
+  position:fixed;
+  inset:0;
+
+  background:rgba(0,0,0,0.7);
+
+  display:none;
+  justify-content:center;
+  align-items:center;
+
+  z-index:999;
+}
+
+.popup-content{
+  background:#3a281d;
+
+  padding:40px;
+
+  border-radius:20px;
+
+  text-align:center;
+
+  width:90%;
+  max-width:400px;
+}
+
+.popup-content h1{
+  font-size:70px;
+
+  margin:20px 0;
+
+  color:#ffd166;
+}
+
+.popup-content button{
+  margin-top:20px;
+}
