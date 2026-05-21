@@ -152,3 +152,53 @@ form input{
   border:none;
   border-radius:10px;
 }
+
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  background:rgba(255,255,255,0.05);
+
+  padding:15px;
+  border-radius:12px;
+
+  margin-bottom:10px;
+}
+
+.cart-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.qty-btn{
+  width:35px;
+  height:35px;
+
+  border:none;
+  border-radius:8px;
+
+  background:#8b5a2b;
+  color:white;
+
+  cursor:pointer;
+}
+
+.qty{
+  min-width:20px;
+  text-align:center;
+}
+
+.delete-btn{
+  width:40px;
+  height:35px;
+
+  border:none;
+  border-radius:8px;
+
+  background:#c1121f;
+  color:white;
+
+  cursor:pointer;
+}
