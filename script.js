@@ -21,11 +21,67 @@ const cartItems =
 const totalText =
   document.getElementById("total");
 
+const menuContainer =
+  document.getElementById("menu-container");
+
+// ======================
+// LOAD MENU FIREBASE
+// ======================
+
+function loadMenus(){
+
+  db.ref("menus").on("value",(snapshot)=>{
+
+    const data = snapshot.val();
+
+    menuContainer.innerHTML = "";
+
+    if(!data){
+
+      menuContainer.innerHTML = `
+        <p>Menu belum tersedia ☕</p>
+      `;
+
+      return;
+    }
+
+    Object.values(data).forEach(menu => {
+
+      menuContainer.innerHTML += `
+
+        <div class="menu-card">
+
+          <img src="${menu.gambar}">
+
+          <h3>
+            ${menu.nama}
+          </h3>
+
+          <p>
+            Rp ${menu.harga
+              .toLocaleString('id-ID')}
+          </p>
+
+          <button
+            onclick="addToCart('${menu.nama}',${menu.harga})"
+          >
+            Tambah
+          </button>
+
+        </div>
+
+      `;
+    });
+
+  });
+
+}
+
 // ======================
 // ADD TO CART
 // ======================
 
-function addToCart(menu, harga){
+function addToCart(menu,harga){
 
   const existing =
     cart.find(item => item.menu === menu);
@@ -39,7 +95,7 @@ function addToCart(menu, harga){
     cart.push({
       menu,
       harga,
-      qty: 1
+      qty:1
     });
 
   }
@@ -272,3 +328,5 @@ function closePopup(){
 // ======================
 
 renderCart();
+
+loadMenus();
