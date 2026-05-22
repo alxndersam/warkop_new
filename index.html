@@ -1,41 +1,181 @@
-<!-- TAMBAHKAN SEBELUM </body> -->
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
 
-<!-- RECEIPT -->
+  <meta charset="UTF-8">
 
-<div id="receipt" class="receipt">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <div class="receipt-box">
+  <title>Warkop Senja</title>
 
-    <h2>
-      ☕ WARKOP SENJA
-    </h2>
+  <link rel="stylesheet" href="style.css">
 
-    <p id="receipt-date"></p>
+  <!-- FIREBASE -->
+  <script defer src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 
-    <hr>
+  <script defer src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
-    <div id="receipt-items"></div>
+  <!-- SCRIPT -->
+  <script defer src="script.js"></script>
 
-    <hr>
+  <!-- FONT -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  >
 
-    <h3>
-      Total :
-      Rp <span id="receipt-total"></span>
-    </h3>
+</head>
 
-    <h3>
-      Antrian :
-      #<span id="receipt-queue"></span>
-    </h3>
+<body>
 
-    <button onclick="printReceipt()">
-      🖨 Print Receipt
-    </button>
+  <!-- HERO -->
+  <header class="hero">
 
-    <button onclick="closeReceipt()">
-      Tutup
-    </button>
+    <div class="overlay"></div>
+
+    <div class="hero-content">
+
+      <h1>
+        ☕ WARKOP SENJA ☕
+      </h1>
+
+      <p>
+        Nongkrong, ngopi, cerita sampai lupa waktu.
+      </p>
+
+    </div>
+
+  </header>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- MENU -->
+    <section class="section">
+
+      <h2>
+        Menu Favorit
+      </h2>
+
+      <div
+        class="menu-grid"
+        id="menu-container"
+      ></div>
+
+    </section>
+
+    <!-- CART -->
+    <section class="section cart-section">
+
+      <h2>
+        🛒 Keranjang
+      </h2>
+
+      <div id="cart-items"></div>
+
+      <h3 class="total">
+
+        Total:
+        Rp <span id="total">0</span>
+
+      </h3>
+
+      <!-- FORM -->
+      <form id="orderForm">
+
+        <input
+          type="text"
+          id="nama"
+          placeholder="Nama customer"
+          required
+        >
+
+        <input
+          type="text"
+          id="meja"
+          placeholder="Nomor meja"
+          required
+        >
+
+        <button type="submit">
+          Pesan Sekarang
+        </button>
+
+      </form>
+
+    </section>
+
+    <!-- TRACKING -->
+    <section class="section tracking-section">
+
+      <h2>
+        📦 Cek Status Pesanan
+      </h2>
+
+      <form id="trackForm">
+
+        <input
+          type="number"
+          id="trackInput"
+          placeholder="Masukkan nomor antrian"
+          required
+        >
+
+        <button type="submit">
+          Cek Status
+        </button>
+
+      </form>
+
+      <div id="tracking-result"></div>
+
+    </section>
+
+  </main>
+
+  <!-- RECEIPT -->
+
+  <div id="receipt" class="receipt">
+
+    <div class="receipt-box">
+
+      <h2>
+        ☕ WARKOP SENJA
+      </h2>
+
+      <p id="receipt-date"></p>
+
+      <hr>
+
+      <div id="receipt-items"></div>
+
+      <hr>
+
+      <h3>
+        Total :
+        Rp <span id="receipt-total"></span>
+      </h3>
+
+      <h3>
+        Antrian :
+        #<span id="receipt-queue"></span>
+      </h3>
+
+      <button onclick="printReceipt()">
+        🖨 Print Receipt
+      </button>
+
+      <button onclick="closeReceipt()">
+        Tutup
+      </button>
+
+    </div>
 
   </div>
 
-</div>
+</body>
+</html>
