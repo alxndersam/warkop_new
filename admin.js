@@ -15,6 +15,9 @@ const db = firebase.database();
 const container =
   document.getElementById("orders-container");
 
+const menuList =
+  document.getElementById("menu-list");
+
 // REALTIME ORDERS
 db.ref("orders").on("value",(snapshot)=>{
 
@@ -141,3 +144,107 @@ function updateStatus(id,status){
   });
 
 }
+
+// ======================
+// ADD MENU
+// ======================
+
+document
+  .getElementById("menuForm")
+  .addEventListener("submit", async (e)=>{
+
+    e.preventDefault();
+
+    const nama =
+      document.getElementById("menuNama").value;
+
+    const harga =
+      parseInt(
+        document.getElementById("menuHarga").value
+      );
+
+    const gambar =
+      document.getElementById("menuGambar").value;
+
+    await db.ref("menus").push({
+      nama,
+      harga,
+      gambar
+    });
+
+    document
+      .getElementById("menuForm")
+      .reset();
+
+});
+
+// ======================
+// LOAD MENU ADMIN
+// ======================
+
+function loadMenuAdmin(){
+
+  db.ref("menus").on("value",(snapshot)=>{
+
+    const data = snapshot.val();
+
+    menuList.innerHTML = "";
+
+    if(!data){
+
+      menuList.innerHTML =
+        "<p>Belum ada menu ☕</p>";
+
+      return;
+    }
+
+    Object.entries(data)
+      .forEach(([id,menu])=>{
+
+        menuList.innerHTML += `
+
+          <div class="menu-admin-card">
+
+            <div>
+
+              <h3>
+                ${menu.nama}
+              </h3>
+
+              <p>
+                Rp ${menu.harga
+                  .toLocaleString('id-ID')}
+              </p>
+
+            </div>
+
+            <button
+              onclick="deleteMenu('${id}')"
+            >
+              Hapus
+            </button>
+
+          </div>
+
+        `;
+      });
+
+  });
+
+}
+
+// ======================
+// DELETE MENU
+// ======================
+
+function deleteMenu(id){
+
+  db.ref("menus/" + id).remove();
+
+}
+
+// ======================
+// INIT
+// ======================
+
+loadMenuAdmin();
