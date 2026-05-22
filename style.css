@@ -8,9 +8,7 @@
 
 body{
   font-family:Poppins,sans-serif;
-
   background:#2b1d14;
-
   color:white;
 }
 
@@ -38,10 +36,9 @@ body{
 
 .hero-content{
   position:relative;
+  z-index:2;
 
   text-align:center;
-
-  z-index:2;
 }
 
 .hero-content h1{
@@ -50,8 +47,6 @@ body{
 
 .hero-content p{
   margin-top:10px;
-
-  font-size:18px;
 }
 
 /* SECTION */
@@ -215,42 +210,6 @@ form button{
   cursor:pointer;
 }
 
-/* POPUP */
-
-.popup{
-  position:fixed;
-  inset:0;
-
-  background:rgba(0,0,0,0.7);
-
-  display:none;
-  justify-content:center;
-  align-items:center;
-
-  z-index:999;
-}
-
-.popup-content{
-  background:#3a281d;
-
-  padding:40px;
-
-  border-radius:20px;
-
-  text-align:center;
-
-  width:90%;
-  max-width:400px;
-}
-
-.popup-content h1{
-  font-size:70px;
-
-  margin:20px 0;
-
-  color:#ffd166;
-}
-
 /* TRACKING */
 
 .tracking-section{
@@ -260,16 +219,10 @@ form button{
 #trackForm{
   display:flex;
   gap:10px;
-
-  margin-top:20px;
 }
 
 #trackForm input{
   flex:1;
-}
-
-#tracking-result{
-  margin-top:20px;
 }
 
 .track-card{
@@ -279,7 +232,7 @@ form button{
 
   border-radius:16px;
 
-  margin-top:10px;
+  margin-top:20px;
 }
 
 .track-status{
@@ -307,6 +260,78 @@ form button{
   background:#2a9d8f;
 }
 
+/* RECEIPT */
+
+.receipt{
+
+  position:fixed;
+
+  inset:0;
+
+  background:rgba(0,0,0,0.7);
+
+  display:none;
+
+  justify-content:center;
+
+  align-items:center;
+
+  z-index:9999;
+
+}
+
+.receipt-box{
+
+  background:white;
+
+  color:black;
+
+  width:90%;
+
+  max-width:400px;
+
+  padding:30px;
+
+  border-radius:20px;
+
+  text-align:center;
+
+}
+
+.receipt-box hr{
+
+  margin:20px 0;
+
+}
+
+.receipt-item{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin:10px 0;
+
+}
+
+.receipt-box button{
+
+  margin-top:15px;
+
+  width:100%;
+
+  padding:12px;
+
+  border:none;
+
+  border-radius:12px;
+
+  cursor:pointer;
+
+  font-weight:bold;
+
+}
+
 /* EMPTY */
 
 .empty-cart{
@@ -331,64 +356,4 @@ form button{
     flex-direction:column;
   }
 
-}
-
-.receipt{
-  position:fixed;
-
-  inset:0;
-
-  background:rgba(0,0,0,0.7);
-
-  display:flex;
-  justify-content:center;
-  align-items:center;
-
-  z-index:9999;
-}
-
-.hidden{
-  display:none;
-}
-
-.receipt-box{
-  background:white;
-
-  color:black;
-
-  width:90%;
-  max-width:400px;
-
-  padding:30px;
-
-  border-radius:20px;
-
-  text-align:center;
-}
-
-.receipt-box hr{
-  margin:20px 0;
-}
-
-.receipt-item{
-  display:flex;
-  justify-content:space-between;
-
-  margin:10px 0;
-}
-
-.receipt-box button{
-  margin-top:15px;
-
-  width:100%;
-
-  padding:12px;
-
-  border:none;
-
-  border-radius:12px;
-
-  cursor:pointer;
-
-  font-weight:bold;
 }
