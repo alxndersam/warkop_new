@@ -34,7 +34,7 @@ const menuContainer =
   document.getElementById("menu-container");
 
 // ======================
-// LOAD MENU FIREBASE
+// LOAD MENU
 // ======================
 
 function loadMenus(){
@@ -47,11 +47,11 @@ function loadMenus(){
 
     if(!data){
 
-      menuContainer.innerHTML = `
-        <p>Menu belum tersedia ☕</p>
-      `;
+      menuContainer.innerHTML =
+        "<p>Menu belum tersedia ☕</p>";
 
       return;
+
     }
 
     Object.values(data).forEach(menu => {
@@ -62,16 +62,14 @@ function loadMenus(){
 
           <img src="${menu.gambar}">
 
-          <h3>
-            ${menu.nama}
-          </h3>
+          <h3>${menu.nama}</h3>
 
           <p>
             Rp ${menu.harga.toLocaleString('id-ID')}
           </p>
 
           <button
-            onclick="addToCart('${menu.nama}', ${menu.harga})"
+            onclick="addToCart('${menu.nama}',${menu.harga})"
           >
             Tambah
           </button>
@@ -97,7 +95,7 @@ function addToCart(menu,harga){
 
   if(existing){
 
-    existing.qty += 1;
+    existing.qty++;
 
   }else{
 
@@ -134,6 +132,7 @@ function renderCart(){
     totalText.innerText = "0";
 
     return;
+
   }
 
   cart.forEach((item,index)=>{
@@ -144,11 +143,9 @@ function renderCart(){
 
       <div class="cart-item">
 
-        <div class="cart-left">
+        <div>
 
-          <h4>
-            ${item.menu}
-          </h4>
+          <h4>${item.menu}</h4>
 
           <p>
             Rp ${item.harga.toLocaleString('id-ID')}
@@ -165,9 +162,7 @@ function renderCart(){
             -
           </button>
 
-          <span class="qty">
-            ${item.qty}
-          </span>
+          <span>${item.qty}</span>
 
           <button
             class="qty-btn"
@@ -197,7 +192,7 @@ function renderCart(){
 }
 
 // ======================
-// INCREASE QTY
+// QTY
 // ======================
 
 function increaseQty(index){
@@ -207,10 +202,6 @@ function increaseQty(index){
   renderCart();
 
 }
-
-// ======================
-// DECREASE QTY
-// ======================
 
 function decreaseQty(index){
 
@@ -227,10 +218,6 @@ function decreaseQty(index){
   renderCart();
 
 }
-
-// ======================
-// REMOVE ITEM
-// ======================
 
 function removeItem(index){
 
@@ -252,7 +239,7 @@ document
 
     if(cart.length === 0){
 
-      alert("Keranjang masih kosong 😭");
+      alert("Keranjang kosong 😭");
 
       return;
 
@@ -264,14 +251,12 @@ document
     const meja =
       document.getElementById("meja").value;
 
-    // AMBIL JUMLAH ORDER
     const snapshot =
       await db.ref("orders").once("value");
 
     const antrian =
       snapshot.numChildren() + 1;
 
-    // HITUNG TOTAL
     let total = 0;
 
     cart.forEach(item => {
@@ -280,7 +265,6 @@ document
 
     });
 
-    // DATA ORDER
     const data = {
 
       nama,
@@ -294,18 +278,14 @@ document
 
       total,
 
-      createdAt: Date.now()
+      createdAt:Date.now()
 
     };
 
-    // PUSH KE FIREBASE
     await db.ref("orders").push(data);
 
-    // SHOW POPUP
     showReceipt(data);
-    showPopup(antrian);
 
-    // RESET CART
     cart.length = 0;
 
     renderCart();
@@ -315,30 +295,6 @@ document
       .reset();
 
 });
-
-// ======================
-// POPUP
-// ======================
-
-function showPopup(antrian){
-
-  document
-    .getElementById("queue-number")
-    .innerText = "#" + antrian;
-
-  document
-    .getElementById("popup")
-    .style.display = "flex";
-
-}
-
-function closePopup(){
-
-  document
-    .getElementById("popup")
-    .style.display = "none";
-
-}
 
 // ======================
 // TRACK ORDER
@@ -361,16 +317,6 @@ document
 
     const data = snapshot.val();
 
-    if(!data){
-
-      result.innerHTML = `
-        <p>Pesanan tidak ditemukan 😭</p>
-      `;
-
-      return;
-
-    }
-
     let found = null;
 
     Object.values(data).forEach(item => {
@@ -385,9 +331,8 @@ document
 
     if(!found){
 
-      result.innerHTML = `
-        <p>Nomor antrian tidak ditemukan 😭</p>
-      `;
+      result.innerHTML =
+        "<p>Pesanan tidak ditemukan 😭</p>";
 
       return;
 
@@ -440,15 +385,7 @@ document
 });
 
 // ======================
-// INIT
-// ======================
-
-renderCart();
-
-loadMenus();
-
-// ======================
-// SHOW RECEIPT
+// RECEIPT
 // ======================
 
 function showReceipt(data){
@@ -497,28 +434,28 @@ function showReceipt(data){
     .innerText =
     new Date().toLocaleString('id-ID');
 
-  receipt.classList.remove("hidden");
+  receipt.style.display = "flex";
 
 }
-
-// ======================
-// CLOSE RECEIPT
-// ======================
 
 function closeReceipt(){
 
   document
     .getElementById("receipt")
-    .classList.add("hidden");
+    .style.display = "none";
 
 }
-
-// ======================
-// PRINT RECEIPT
-// ======================
 
 function printReceipt(){
 
   window.print();
 
 }
+
+// ======================
+// INIT
+// ======================
+
+renderCart();
+
+loadMenus();
