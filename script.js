@@ -302,6 +302,7 @@ document
     await db.ref("orders").push(data);
 
     // SHOW POPUP
+    showReceipt(data);
     showPopup(antrian);
 
     // RESET CART
@@ -445,3 +446,79 @@ document
 renderCart();
 
 loadMenus();
+
+// ======================
+// SHOW RECEIPT
+// ======================
+
+function showReceipt(data){
+
+  const receipt =
+    document.getElementById("receipt");
+
+  const receiptItems =
+    document.getElementById("receipt-items");
+
+  receiptItems.innerHTML = "";
+
+  data.orders.forEach(item => {
+
+    receiptItems.innerHTML += `
+
+      <div class="receipt-item">
+
+        <span>
+          ${item.menu} x${item.qty}
+        </span>
+
+        <span>
+          Rp ${(item.harga * item.qty)
+            .toLocaleString('id-ID')}
+        </span>
+
+      </div>
+
+    `;
+
+  });
+
+  document
+    .getElementById("receipt-total")
+    .innerText =
+    data.total.toLocaleString('id-ID');
+
+  document
+    .getElementById("receipt-queue")
+    .innerText =
+    data.antrian;
+
+  document
+    .getElementById("receipt-date")
+    .innerText =
+    new Date().toLocaleString('id-ID');
+
+  receipt.classList.remove("hidden");
+
+}
+
+// ======================
+// CLOSE RECEIPT
+// ======================
+
+function closeReceipt(){
+
+  document
+    .getElementById("receipt")
+    .classList.add("hidden");
+
+}
+
+// ======================
+// PRINT RECEIPT
+// ======================
+
+function printReceipt(){
+
+  window.print();
+
+}
