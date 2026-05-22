@@ -1,3 +1,5 @@
+// script.js
+
 // FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDIog8cGM6HWbSj-02rUOh9Wn9JahPix2U",
@@ -322,6 +324,103 @@ function closePopup(){
     .getElementById("popup")
     .style.display = "none";
 }
+
+// ======================
+// TRACK ORDER
+// ======================
+
+document
+  .getElementById("trackForm")
+  .addEventListener("submit", async (e)=>{
+
+    e.preventDefault();
+
+    const queue =
+      document.getElementById("trackInput").value;
+
+    const result =
+      document.getElementById("tracking-result");
+
+    const snapshot =
+      await db.ref("orders").once("value");
+
+    const data = snapshot.val();
+
+    if(!data){
+
+      result.innerHTML = `
+        <p>Pesanan tidak ditemukan 😭</p>
+      `;
+
+      return;
+    }
+
+    let found = null;
+
+    Object.values(data).forEach(item => {
+
+      if(item.antrian == queue){
+
+        found = item;
+
+      }
+
+    });
+
+    if(!found){
+
+      result.innerHTML = `
+        <p>Nomor antrian tidak ditemukan 😭</p>
+      `;
+
+      return;
+    }
+
+    let statusClass = "";
+    let statusText = "";
+
+    if(found.status === "pending"){
+
+      statusClass = "pending-status";
+      statusText = "Pending ☕";
+
+    }
+
+    if(found.status === "diproses"){
+
+      statusClass = "process-status";
+      statusText = "Diproses 👨‍🍳";
+
+    }
+
+    if(found.status === "selesai"){
+
+      statusClass = "done-status";
+      statusText = "Siap Diambil ✅";
+
+    }
+
+    result.innerHTML = `
+
+      <div class="track-card">
+
+        <h3>
+          #${found.antrian}
+        </h3>
+
+        <p>
+          ${found.nama}
+        </p>
+
+        <div class="track-status ${statusClass}">
+          ${statusText}
+        </div>
+
+      </div>
+
+    `;
+
+});
 
 // ======================
 // INIT
