@@ -147,3 +147,81 @@ header h1{
   }
 
 }
+
+.add-menu{
+  margin-bottom:40px;
+}
+
+.add-menu form{
+  display:flex;
+  flex-direction:column;
+
+  gap:15px;
+
+  margin-top:20px;
+}
+
+.add-menu input{
+  padding:14px;
+
+  border:none;
+
+  border-radius:12px;
+
+  font-size:16px;
+}
+
+.add-menu button{
+  padding:14px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:#ddb892;
+
+  color:#2b1d14;
+
+  font-weight:bold;
+
+  cursor:pointer;
+}
+
+#menu-list{
+  display:grid;
+  gap:15px;
+
+  margin:30px 0;
+}
+
+.menu-admin-card{
+  background:#3a281d;
+
+  padding:20px;
+
+  border-radius:16px;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.menu-admin-card button{
+  background:#c1121f;
+
+  color:white;
+
+  border:none;
+
+  padding:10px 16px;
+
+  border-radius:10px;
+
+  cursor:pointer;
+}
+
+hr{
+  margin:40px 0;
+
+  border-color:rgba(255,255,255,0.1);
+}
