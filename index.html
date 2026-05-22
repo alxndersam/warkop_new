@@ -138,6 +138,49 @@
 
   </main>
 
+<!-- RECEIPT -->
+
+<div
+  id="receipt"
+  class="receipt hidden"
+>
+
+  <div class="receipt-box">
+
+    <h2>
+      ☕ WARKOP SENJA
+    </h2>
+
+    <p id="receipt-date"></p>
+
+    <hr>
+
+    <div id="receipt-items"></div>
+
+    <hr>
+
+    <h3>
+      Total :
+      Rp <span id="receipt-total"></span>
+    </h3>
+
+    <h3>
+      Antrian :
+      #<span id="receipt-queue"></span>
+    </h3>
+
+    <button onclick="printReceipt()">
+      🖨 Print Receipt
+    </button>
+
+    <button onclick="closeReceipt()">
+      Tutup
+    </button>
+
+  </div>
+
+</div>
+  
   <!-- POPUP -->
   <div id="popup" class="popup">
 
