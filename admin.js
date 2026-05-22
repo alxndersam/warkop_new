@@ -12,29 +12,32 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 // ======================
+// NOTIF SOUND
+// ======================
+const notifSound = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
+
+// ======================
 // CHART
 // ======================
 let chartInstance = null;
 
-function renderChart(dailyData){
+function renderChart(data){
   const ctx = document.getElementById("salesChart");
 
-  const labels = Object.keys(dailyData);
-  const values = Object.values(dailyData);
+  const labels = Object.keys(data);
+  const values = Object.values(data);
 
-  if(chartInstance){
-    chartInstance.destroy();
-  }
+  if(chartInstance) chartInstance.destroy();
 
   chartInstance = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: labels,
-      datasets: [{
-        label: "Penjualan (Rp)",
-        data: values,
-        borderWidth: 2,
-        tension: 0.3
+    type:"line",
+    data:{
+      labels,
+      datasets:[{
+        label:"Penjualan",
+        data:values,
+        borderWidth:2,
+        tension:0.3
       }]
     }
   });
@@ -43,49 +46,25 @@ function renderChart(dailyData){
 // ======================
 // ANALYTICS
 // ======================
-function getDailySales(data){
+function getDaily(data){
   const daily = {};
 
-  Object.values(data).forEach(order => {
-    const date = order.date || "unknown";
-
-    if(!daily[date]){
-      daily[date] = 0;
-    }
-
-    daily[date] += order.total;
+  Object.values(data).forEach(o=>{
+    const d = o.date || "unknown";
+    daily[d] = (daily[d] || 0) + o.total;
   });
 
   return daily;
 }
 
 // ======================
-// DASHBOARD REALTIME
+// DASHBOARD LIVE
 // ======================
-let previousOrderCount = 0;
+let lastCount = 0;
 
-db.ref("orders").on("value",(snapshot)=>{
+db.ref("orders").on("value",(snap)=>{
 
-  const data = snapshot.val();
-
-  // ======================
-  // 🔔 DETEKSI ORDER BARU
-  // ======================
-  const currentCount = data ? Object.keys(data).length : 0;
-
-  if(previousOrderCount !== 0 && currentCount > previousOrderCount){
-
-    triggerNotification();
-
-  }
-
-  previousOrderCount = currentCount;
-
-  // ======================
-  // EXISTING CODE KAMU
-  // ======================
-
-  const data = snapshot.val();
+  const data = snap.val();
 
   let totalSales = 0;
   let totalOrders = 0;
@@ -93,114 +72,92 @@ db.ref("orders").on("value",(snapshot)=>{
 
   if(data){
 
-    Object.values(data).forEach(order => {
+    const keys = Object.keys(data);
 
-      totalSales += order.total;
+    // 🔔 NOTIF ORDER BARU
+    if(lastCount !== 0 && keys.length > lastCount){
+      notifSound.play();
+
+      document.body.style.background = "#3a281d";
+      setTimeout(()=>document.body.style.background="#2b1d14",150);
+    }
+
+    lastCount = keys.length;
+
+    Object.values(data).forEach(o=>{
+      totalSales += o.total;
       totalOrders++;
 
-      order.orders.forEach(item => {
-        menuCount[item.menu] =
-          (menuCount[item.menu] || 0) + item.qty;
+      o.orders.forEach(i=>{
+        menuCount[i.menu] = (menuCount[i.menu]||0)+i.qty;
       });
-
     });
 
-    // BEST MENU
-    let bestMenu = "-";
-    let highest = 0;
-
-    Object.entries(menuCount).forEach(([menu,qty])=>{
-      if(qty > highest){
-        highest = qty;
-        bestMenu = menu;
-      }
+    let best="-",max=0;
+    Object.entries(menuCount).forEach(([m,q])=>{
+      if(q>max){max=q;best=m;}
     });
 
-animateValue(
-  document.getElementById("total-orders"),
-  0,
-  totalOrders,
-  800
-);
+    document.getElementById("total-orders").innerText = totalOrders;
+    document.getElementById("total-sales").innerText =
+      "Rp "+totalSales.toLocaleString("id-ID");
 
-animateValue(
-  document.getElementById("total-sales"),
-  0,
-  totalSales,
-  1000
-);
+    document.getElementById("best-menu").innerText = best;
 
-    document.getElementById("best-menu").innerText =
-      bestMenu;
-
-    // 📊 CHART
-    const daily = getDailySales(data);
-    renderChart(daily);
-
+    renderChart(getDaily(data));
   }
 
 });
 
 // ======================
-// ORDERS + MENU (tetap seperti kamu)
+// ORDERS REALTIME
 // ======================
-
 const container = document.getElementById("orders-container");
-const menuList = document.getElementById("menu-list");
 
-// REALTIME ORDERS
-db.ref("orders").on("value",(snapshot)=>{
+db.ref("orders").on("value",(snap)=>{
 
-  const data = snapshot.val();
-  container.innerHTML = "";
+  const data = snap.val();
+  container.innerHTML="";
 
   if(!data){
-    container.innerHTML = `<div class="empty">Belum ada pesanan ☕</div>`;
+    container.innerHTML="<div class='empty'>Belum ada pesanan</div>";
     return;
   }
 
-  Object.entries(data).reverse().forEach(([id,item])=>{
+  Object.entries(data).reverse().forEach(([id,o])=>{
 
-    let ordersHTML = "";
+    let items="";
 
-    item.orders.forEach(order=>{
-      ordersHTML += `
+    o.orders.forEach(i=>{
+      items+=`
         <div class="order-item">
-          <div>${order.menu} (${order.qty}x)</div>
-          <div>Rp ${(order.harga * order.qty).toLocaleString("id-ID")}</div>
+          <span>${i.menu} (${i.qty})</span>
+          <span>Rp ${(i.qty*i.harga).toLocaleString("id-ID")}</span>
         </div>
       `;
     });
 
-    let statusClass = item.status;
-
-    container.innerHTML += `
+    container.innerHTML+=`
       <div class="order-card">
         <div class="top-order">
-          <h2>#${item.antrian}</h2>
-          <span class="status ${statusClass}">
-            ${item.status}
-          </span>
+          <h2>#${o.antrian}</h2>
+          <span class="status ${o.status}">${o.status}</span>
         </div>
 
-        <p class="customer">${item.nama} • Meja ${item.meja}</p>
+        <p>${o.nama} • Meja ${o.meja}</p>
 
-        <div class="order-list">${ordersHTML}</div>
+        ${items}
 
         <div class="total-price">
-          Total: Rp ${item.total.toLocaleString("id-ID")}
+          Total: Rp ${o.total.toLocaleString("id-ID")}
         </div>
 
         <div class="actions">
           <button class="process-btn"
-            onclick="updateStatus('${id}','diproses')">
-            Diproses
-          </button>
+            onclick="update('${id}','diproses')">Proses</button>
 
           <button class="done-btn"
-            onclick="updateStatus('${id}','selesai')">
-            Selesai
-          </button>
+            onclick="update('${id}','selesai')">Selesai</button>
         </div>
       </div>
     `;
@@ -208,96 +165,49 @@ db.ref("orders").on("value",(snapshot)=>{
 
 });
 
+// ======================
 // UPDATE STATUS
-function updateStatus(id,status){
-  db.ref("orders/" + id).update({ status });
+// ======================
+function update(id,status){
+  db.ref("orders/"+id).update({status});
 }
 
-// MENU ADMIN (tetap)
+// ======================
+// MENU
+// ======================
 document.getElementById("menuForm")
-.addEventListener("submit", async (e)=>{
-
+.addEventListener("submit",async e=>{
   e.preventDefault();
 
-  const nama = document.getElementById("menuNama").value;
-  const harga = parseInt(document.getElementById("menuHarga").value);
-  const gambar = document.getElementById("menuGambar").value;
-
   await db.ref("menus").push({
-    nama, harga, gambar
+    nama:menuNama.value,
+    harga:+menuHarga.value,
+    gambar:menuGambar.value
   });
 
   e.target.reset();
 });
 
-// LOAD MENU ADMIN
-db.ref("menus").on("value",(snapshot)=>{
-
-  const data = snapshot.val();
-  menuList.innerHTML = "";
+// load menu
+db.ref("menus").on("value",snap=>{
+  const data=snap.val();
+  const list=document.getElementById("menu-list");
+  list.innerHTML="";
 
   if(!data){
-    menuList.innerHTML = "<p>Belum ada menu ☕</p>";
+    list.innerHTML="<p>Belum ada menu</p>";
     return;
   }
 
-  Object.entries(data).forEach(([id,menu])=>{
-    menuList.innerHTML += `
+  Object.entries(data).forEach(([id,m])=>{
+    list.innerHTML+=`
       <div class="menu-admin-card">
         <div>
-          <h3>${menu.nama}</h3>
-          <p>Rp ${menu.harga.toLocaleString("id-ID")}</p>
+          <h3>${m.nama}</h3>
+          <p>Rp ${m.harga.toLocaleString("id-ID")}</p>
         </div>
-        <button onclick="deleteMenu('${id}')">Hapus</button>
+        <button onclick="db.ref('menus/${id}').remove()">Hapus</button>
       </div>
     `;
   });
-
 });
-
-function deleteMenu(id){
-  db.ref("menus/" + id).remove();
-}
-
-function triggerNotification(){
-
-  document.body.style.transition = "0.2s";
-document.body.style.backgroundColor = "#3a281d";
-
-setTimeout(() => {
-  document.body.style.backgroundColor = "#2b1d14";
-}, 150);
-  
-  // 🔊 sound
-  const notifSound = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
-  notifSound.play();
-
-  // 📢 popup kecil
-  const toast = document.createElement("div");
-
-  toast.innerText = "🔔 Order baru masuk!";
-  
-  toast.style.position = "fixed";
-  toast.style.bottom = "20px";
-  toast.style.right = "20px";
-  toast.style.background = "#2a9d8f";
-  toast.style.color = "white";
-  toast.style.padding = "15px 20px";
-  toast.style.borderRadius = "12px";
-  toast.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
-  toast.style.zIndex = "9999";
-  toast.style.fontWeight = "bold";
-
-  document.body.appendChild(toast);
-
-  setTimeout(()=>{
-    toast.remove();
-  },3000);
-}
-
-animateMoney(
-  document.getElementById("total-sales"),
-  0,
-  totalSales,
-  1000
-);
