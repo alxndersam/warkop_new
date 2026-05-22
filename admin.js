@@ -248,3 +248,86 @@ function deleteMenu(id){
 // ======================
 
 loadMenuAdmin();
+
+// ======================
+// DASHBOARD SALES
+// ======================
+
+function loadDashboard(){
+
+  db.ref("orders").on("value",(snapshot)=>{
+
+    const data = snapshot.val();
+
+    let totalSales = 0;
+    let totalOrders = 0;
+
+    let menuCount = {};
+
+    if(data){
+
+      Object.values(data).forEach(order => {
+
+        totalSales += order.total;
+
+        totalOrders++;
+
+        order.orders.forEach(item => {
+
+          if(menuCount[item.menu]){
+
+            menuCount[item.menu] += item.qty;
+
+          }else{
+
+            menuCount[item.menu] = item.qty;
+
+          }
+
+        });
+
+      });
+
+    }
+
+    // BEST MENU
+    let bestMenu = "-";
+    let highest = 0;
+
+    Object.entries(menuCount)
+      .forEach(([menu,qty])=>{
+
+        if(qty > highest){
+
+          highest = qty;
+          bestMenu = menu;
+
+        }
+
+      });
+
+    document
+      .getElementById("total-sales")
+      .innerText =
+      "Rp " +
+      totalSales.toLocaleString('id-ID');
+
+    document
+      .getElementById("total-orders")
+      .innerText =
+      totalOrders;
+
+    document
+      .getElementById("best-menu")
+      .innerText =
+      bestMenu;
+
+  });
+
+}
+
+// ======================
+// INIT DASHBOARD
+// ======================
+
+loadDashboard();
