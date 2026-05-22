@@ -332,3 +332,63 @@ form button{
   }
 
 }
+
+.receipt{
+  position:fixed;
+
+  inset:0;
+
+  background:rgba(0,0,0,0.7);
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  z-index:9999;
+}
+
+.hidden{
+  display:none;
+}
+
+.receipt-box{
+  background:white;
+
+  color:black;
+
+  width:90%;
+  max-width:400px;
+
+  padding:30px;
+
+  border-radius:20px;
+
+  text-align:center;
+}
+
+.receipt-box hr{
+  margin:20px 0;
+}
+
+.receipt-item{
+  display:flex;
+  justify-content:space-between;
+
+  margin:10px 0;
+}
+
+.receipt-box button{
+  margin-top:15px;
+
+  width:100%;
+
+  padding:12px;
+
+  border:none;
+
+  border-radius:12px;
+
+  cursor:pointer;
+
+  font-weight:bold;
+}
