@@ -279,3 +279,23 @@ function triggerNotification(){
     toast.remove();
   },3000);
 }
+
+function animateValue(element, start, end, duration) {
+  let startTimestamp = null;
+
+  const step = (timestamp) => {
+    if (!startTimestamp) startTimestamp = timestamp;
+
+    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+
+    const value = Math.floor(progress * (end - start) + start);
+
+    element.innerText = value.toLocaleString("id-ID");
+
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    }
+  };
+
+  window.requestAnimationFrame(step);
+}
