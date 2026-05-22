@@ -116,11 +116,19 @@ db.ref("orders").on("value",(snapshot)=>{
       }
     });
 
-    document.getElementById("total-sales").innerText =
-      "Rp " + totalSales.toLocaleString("id-ID");
+animateValue(
+  document.getElementById("total-orders"),
+  0,
+  totalOrders,
+  800
+);
 
-    document.getElementById("total-orders").innerText =
-      totalOrders;
+animateValue(
+  document.getElementById("total-sales"),
+  0,
+  totalSales,
+  1000
+);
 
     document.getElementById("best-menu").innerText =
       bestMenu;
@@ -253,6 +261,13 @@ function deleteMenu(id){
 
 function triggerNotification(){
 
+  document.body.style.transition = "0.2s";
+document.body.style.backgroundColor = "#3a281d";
+
+setTimeout(() => {
+  document.body.style.backgroundColor = "#2b1d14";
+}, 150);
+  
   // 🔊 sound
   const notifSound = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
   notifSound.play();
@@ -280,22 +295,9 @@ function triggerNotification(){
   },3000);
 }
 
-function animateValue(element, start, end, duration) {
-  let startTimestamp = null;
-
-  const step = (timestamp) => {
-    if (!startTimestamp) startTimestamp = timestamp;
-
-    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-
-    const value = Math.floor(progress * (end - start) + start);
-
-    element.innerText = value.toLocaleString("id-ID");
-
-    if (progress < 1) {
-      window.requestAnimationFrame(step);
-    }
-  };
-
-  window.requestAnimationFrame(step);
-}
+animateMoney(
+  document.getElementById("total-sales"),
+  0,
+  totalSales,
+  1000
+);
