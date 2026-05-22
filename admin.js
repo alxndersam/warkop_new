@@ -62,7 +62,28 @@ function getDailySales(data){
 // ======================
 // DASHBOARD REALTIME
 // ======================
+let previousOrderCount = 0;
+
 db.ref("orders").on("value",(snapshot)=>{
+
+  const data = snapshot.val();
+
+  // ======================
+  // 🔔 DETEKSI ORDER BARU
+  // ======================
+  const currentCount = data ? Object.keys(data).length : 0;
+
+  if(previousOrderCount !== 0 && currentCount > previousOrderCount){
+
+    triggerNotification();
+
+  }
+
+  previousOrderCount = currentCount;
+
+  // ======================
+  // EXISTING CODE KAMU
+  // ======================
 
   const data = snapshot.val();
 
@@ -228,4 +249,33 @@ db.ref("menus").on("value",(snapshot)=>{
 
 function deleteMenu(id){
   db.ref("menus/" + id).remove();
+}
+
+function triggerNotification(){
+
+  // 🔊 sound
+  const notifSound = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
+  notifSound.play();
+
+  // 📢 popup kecil
+  const toast = document.createElement("div");
+
+  toast.innerText = "🔔 Order baru masuk!";
+  
+  toast.style.position = "fixed";
+  toast.style.bottom = "20px";
+  toast.style.right = "20px";
+  toast.style.background = "#2a9d8f";
+  toast.style.color = "white";
+  toast.style.padding = "15px 20px";
+  toast.style.borderRadius = "12px";
+  toast.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
+  toast.style.zIndex = "9999";
+  toast.style.fontWeight = "bold";
+
+  document.body.appendChild(toast);
+
+  setTimeout(()=>{
+    toast.remove();
+  },3000);
 }
