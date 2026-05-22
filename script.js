@@ -265,22 +265,16 @@ document
 
     });
 
-    const data = {
-
-      nama,
-      meja,
-
-      antrian,
-
-      status:"pending",
-
-      orders:[...cart],
-
-      total,
-
-      createdAt:Date.now()
-
-    };
+ const data = {
+  nama,
+  meja,
+  antrian,
+  status: "pending",
+  orders: [...cart],
+  total,
+  createdAt: Date.now(),
+  date: new Date().toISOString().split("T")[0] // ✅ TAMBAHAN PENTING
+};
 
     await db.ref("orders").push(data);
 
