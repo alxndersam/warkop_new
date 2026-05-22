@@ -1,6 +1,9 @@
 // script.js
 
+// ======================
 // FIREBASE CONFIG
+// ======================
+
 const firebaseConfig = {
   apiKey: "AIzaSyDIog8cGM6HWbSj-02rUOh9Wn9JahPix2U",
   authDomain: "wanmoein-kopi.firebaseapp.com",
@@ -14,6 +17,10 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.database();
+
+// ======================
+// GLOBAL
+// ======================
 
 const cart = [];
 
@@ -60,12 +67,11 @@ function loadMenus(){
           </h3>
 
           <p>
-            Rp ${menu.harga
-              .toLocaleString('id-ID')}
+            Rp ${menu.harga.toLocaleString('id-ID')}
           </p>
 
           <button
-            onclick="addToCart('${menu.nama}',${menu.harga})"
+            onclick="addToCart('${menu.nama}', ${menu.harga})"
           >
             Tambah
           </button>
@@ -73,6 +79,7 @@ function loadMenus(){
         </div>
 
       `;
+
     });
 
   });
@@ -103,6 +110,7 @@ function addToCart(menu,harga){
   }
 
   renderCart();
+
 }
 
 // ======================
@@ -118,11 +126,9 @@ function renderCart(){
   if(cart.length === 0){
 
     cartItems.innerHTML = `
-
       <p class="empty-cart">
         Keranjang masih kosong ☕
       </p>
-
     `;
 
     totalText.innerText = "0";
@@ -145,8 +151,7 @@ function renderCart(){
           </h4>
 
           <p>
-            Rp ${item.harga
-              .toLocaleString('id-ID')}
+            Rp ${item.harga.toLocaleString('id-ID')}
           </p>
 
         </div>
@@ -183,10 +188,12 @@ function renderCart(){
       </div>
 
     `;
+
   });
 
   totalText.innerText =
     total.toLocaleString('id-ID');
+
 }
 
 // ======================
@@ -198,6 +205,7 @@ function increaseQty(index){
   cart[index].qty++;
 
   renderCart();
+
 }
 
 // ======================
@@ -217,6 +225,7 @@ function decreaseQty(index){
   }
 
   renderCart();
+
 }
 
 // ======================
@@ -228,6 +237,7 @@ function removeItem(index){
   cart.splice(index,1);
 
   renderCart();
+
 }
 
 // ======================
@@ -245,6 +255,7 @@ document
       alert("Keranjang masih kosong 😭");
 
       return;
+
     }
 
     const nama =
@@ -253,7 +264,7 @@ document
     const meja =
       document.getElementById("meja").value;
 
-    // GET TOTAL ORDER
+    // AMBIL JUMLAH ORDER
     const snapshot =
       await db.ref("orders").once("value");
 
@@ -263,7 +274,7 @@ document
     // HITUNG TOTAL
     let total = 0;
 
-    cart.forEach(item=>{
+    cart.forEach(item => {
 
       total += item.harga * item.qty;
 
@@ -279,14 +290,15 @@ document
 
       status:"pending",
 
-      orders:cart,
+      orders:[...cart],
 
       total,
 
-      createdAt:Date.now()
+      createdAt: Date.now()
+
     };
 
-    // PUSH FIREBASE
+    // PUSH KE FIREBASE
     await db.ref("orders").push(data);
 
     // SHOW POPUP
@@ -316,6 +328,7 @@ function showPopup(antrian){
   document
     .getElementById("popup")
     .style.display = "flex";
+
 }
 
 function closePopup(){
@@ -323,6 +336,7 @@ function closePopup(){
   document
     .getElementById("popup")
     .style.display = "none";
+
 }
 
 // ======================
@@ -353,6 +367,7 @@ document
       `;
 
       return;
+
     }
 
     let found = null;
@@ -374,6 +389,7 @@ document
       `;
 
       return;
+
     }
 
     let statusClass = "";
