@@ -3,125 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Admin Warkop</title>
+  <title>Admin Warkop Senja</title>
 
   <link rel="stylesheet" href="admin.css">
 
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+  <!-- Chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
 
-  <header>
+<header>
+  <h1>☕ Admin Warkop Senja</h1>
+</header>
 
-    <h1>☕ Admin Warkop Senja</h1>
+<!-- DASHBOARD -->
+<section class="dashboard">
 
-  </header>
-<!-- ADD MENU -->
+  <div class="dash-card">
+    <h3>💰 Total Pendapatan</h3>
+    <h1 id="total-sales">Rp 0</h1>
+  </div>
 
-<section class="add-menu">
+  <div class="dash-card">
+    <h3>📦 Total Pesanan</h3>
+    <h1 id="total-orders">0</h1>
+  </div>
 
-  <h2>
-    ➕ Tambah Menu
-  </h2>
-
-  <form id="menuForm">
-
-    <input
-      type="text"
-      id="menuNama"
-      placeholder="Nama menu"
-      required
-    >
-
-    <input
-      type="number"
-      id="menuHarga"
-      placeholder="Harga menu"
-      required
-    >
-
-    <input
-      type="text"
-      id="menuGambar"
-      placeholder="images/menu.jpg"
-      required
-    >
-
-    <button type="submit">
-      Tambah Menu
-    </button>
-
-  </form>
+  <div class="dash-card">
+    <h3>☕ Menu Terlaris</h3>
+    <h1 id="best-menu">-</h1>
+  </div>
 
 </section>
 
-<hr>
-
-  <!-- DASHBOARD -->
-
-  <!-- SALES CHART -->
+<!-- CHART -->
 <section class="dashboard">
-  <div class="dash-card" style="grid-column: 1/-1;">
+  <div class="dash-card full">
     <h3>📈 Grafik Penjualan Harian</h3>
     <canvas id="salesChart"></canvas>
   </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
-<section class="dashboard">
+<!-- ADD MENU -->
+<section class="add-menu">
+  <h2>➕ Tambah Menu</h2>
 
-  <div class="dash-card">
-
-    <h3>
-      💰 Total Pendapatan
-    </h3>
-
-    <h1 id="total-sales">
-      Rp 0
-    </h1>
-
-  </div>
-
-  <div class="dash-card">
-
-    <h3>
-      📦 Total Pesanan
-    </h3>
-
-    <h1 id="total-orders">
-      0
-    </h1>
-
-  </div>
-
-  <div class="dash-card">
-
-    <h3>
-      ☕ Menu Terlaris
-    </h3>
-
-    <h1 id="best-menu">
-      -
-    </h1>
-
-  </div>
-
+  <form id="menuForm">
+    <input type="text" id="menuNama" placeholder="Nama menu" required>
+    <input type="number" id="menuHarga" placeholder="Harga" required>
+    <input type="text" id="menuGambar" placeholder="images/menu.jpg" required>
+    <button type="submit">Tambah</button>
+  </form>
 </section>
-  
+
+<hr>
+
+<!-- MENU LIST -->
 <div id="menu-list"></div>
 
 <hr>
 
-<div id="orders-container"></div>
-  <main id="orders-container">
+<!-- ORDERS -->
+<main id="orders-container"></main>
 
-  </main>
-
-  <script src="admin.js"></script>
+<script src="admin.js"></script>
 
 </body>
 </html>
